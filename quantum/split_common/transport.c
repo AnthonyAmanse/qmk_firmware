@@ -76,7 +76,7 @@ bool transport_execute_transaction(int8_t id, const void *initiator2target_buf, 
             return false;
         }
         memcpy(target2initiator_buf, split_trans_target2initiator_buffer(trans), len);
-    }
+    } for rgb matrix
 
     return true;
 }
