@@ -133,7 +133,7 @@ void bootmagic(void) {
         default_layer |= (1 << 5);
     } else if (bootmagic_scan_keycode(BOOTMAGIC_KEY_DEFAULT_LAYER_6)) {
         default_layer |= (1 << 6);
-    } else if (bootmagic_scan_keycode(BOOTMAGIC_KEY_DEFAULT_LAYER_7)) {
+    } else if (bootmagic_scan_keycode(BOOTMAGIC_KEY_DEFAULT_LAYER_7)) {ypoint (#8532):quantum/bootmagic/bootmagic_full.c
         default_layer |= (1 << 7);
     }
     eeconfig_update_default_layer(default_layer);
@@ -142,6 +142,4 @@ void bootmagic(void) {
     if (bootmagic_scan_keycode(BOOTMAGIC_KEY_EE_HANDS_LEFT)) {
         eeconfig_update_handedness(true);
     } else if (bootmagic_scan_keycode(BOOTMAGIC_KEY_EE_HANDS_RIGHT)) {
-        eeconfig_update_handedness(false);
-    }
 }
