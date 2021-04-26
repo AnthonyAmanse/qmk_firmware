@@ -9,7 +9,7 @@
      * |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
      * | Ctrl   | Z      | X      | C      | D      | V      |        |  |        | N      | M      | ,      | .      | /      | Delete |
      * |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-     * | `~/Fn  | Win    | Win    | Alt    | Space  | LShift | Bksp   |  | Enter  | Enter  | Bksp   | FN     | Alt    | Win    | Ctrl   |
+     * | `~/Fn  | Win    | Win    | Alt    | LShift | Space  | Bksp   |  | Enter  | Enter  | Bksp   | FN     | Alt    | Win    | Ctrl   |
      * "--------+--------+--------+--------+--------+--------+--------'  '--------+--------+--------+--------+--------+--------+--------'
      *
      */
@@ -46,8 +46,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,   KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    GAME,
         KC_TAB,   KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,   KC_J,   KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSLS,
         KC_CAPS,  KC_A,    KC_R,    KC_S,    KC_T,    KC_G,   KC_M,   KC_N,    KC_E,    KC_I,    KC_O,    FN_QUOT,
-        KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,   KC_K,   KC_H,    KC_COMM, KC_DOT,  RC_SLASH,KC_DELETE,
-        FN_GRAVE, RGBRST,  KC_LGUI, KC_LALT, KC_LSFT, KC_SPC, KC_ENT, KC_BSPC, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,   KC_K,   KC_H,    KC_COMM, KC_DOT,  KC_UP,   KC_DELETE,
+        ADJUST,   KC_LGUI, KC_LALT, FN_GRAVE,KC_LSFT, KC_SPC, KC_ENT, KC_BSPC, RC_SLASH,KC_LEFT, KC_DOWN, KC_RGHT
     ),
 
     [_GAME] = LAYOUT(
@@ -55,23 +55,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    _______,
         _______, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, _______,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______,
-        KC_LCTL, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+        KC_LCTL, _______, FN_GRAVE,KC_LALT, KC_SPC,  _______, _______, _______, _______, _______, _______, _______
     ),
 
     [_FN] = LAYOUT(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-        _______, _______, _______, _______, KC_LCBR, KC_RCBR, KC_EQL,  KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_F12,
-        _______, _______, _______, _______, KC_LBRC, KC_RBRC, KC_MINS, KC_LEFT, KC_DOWN, KC_RGHT, KC_INS,  KC_PGDN,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, KC_VOLU, KC_VOLD, _______, _______, _______
+        _______, _______, _______, KC_COLN, KC_LCBR, KC_RCBR, KC_PPLS, KC_EQL,  KC_UP,   _______, KC_PSCR, KC_F12,
+        _______, _______, _______, KC_SCLN, KC_LPRN, KC_RPRN, KC_PMNS, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+        _______, _______, _______, _______, KC_LBRC, KC_RBRC, _______, KC_PAST, KC_PSLS, _______, KC_VOLU, _______,
+        _______, _______, _______, _______, _______, _______, KC_UNDS, _______, _______, _______, KC_VOLD, _______
     ),
 
     [_ADJUST] = LAYOUT(
-        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-        _______, RGB_SAD, RGB_VAI, RGB_SAI, RESET,   KC_F11,  KC_F12,  KC_P7,   KC_P8,   KC_P9,   _______, _______,
+        RESET,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
+        RGBRST,  RGB_SAD, RGB_VAI, RGB_SAI, _______, KC_F11,  KC_F12,  KC_P7,   KC_P8,   KC_P9,   _______, _______,
         _______, RGB_HUD, RGB_VAD, RGB_HUI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   _______, _______,
         _______, RGB_SPD, _______, RGB_SPI, _______, _______, _______, KC_P1,   KC_P2,   KC_P3,   _______, _______,
-        _______, RGB_RMOD,_______, RGB_MOD, RGB_TOG, _______, _______, KC_P0,   KC_PDOT, KC_NLCK, _______, _______
+        _______, _______, _______, RGB_MOD, RGB_TOG, _______, _______, KC_P0,   KC_PDOT, KC_NLCK, _______, _______
     ),
 };
 
@@ -103,22 +103,22 @@ const uint16_t PROGMEM encoders[][NUMBER_OF_ENCODERS][ENCODER_OPTIONS]  = {
         KC_VOLU, KC_VOLD
     ),
     [_GAME] = ENCODER_LAYOUT( \
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD
     ),
     [_FN] = ENCODER_LAYOUT( \
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD
     ),
     [_ADJUST] = ENCODER_LAYOUT( \
-        _______, _______,
-        _______, _______,
-        _______, _______,
-        _______, _______
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD,
+        KC_VOLU, KC_VOLD
     )
 };
 
@@ -237,6 +237,65 @@ void rgb_matrix_decrease_flags(void)
             break;
     }
 }
+
+void rgb_matrix_indicators_user(void) {
+//   if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
+    switch (biton32(layer_state)) {
+        case _GAME:
+            rgb_matrix_set_color_all(0, 0, 0);
+            rgb_matrix_set_color(7, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(8, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(9, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(10, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(13, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(14, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(15, 0xFF, 0x00, 0x00);
+            rgb_matrix_set_color(16, 0xFF, 0x00, 0x00);
+
+
+            rgb_matrix_set_color(23, 0x00, 0x00, 0xFF);
+            rgb_matrix_set_color(24, 0x00, 0x00, 0xFF);
+            rgb_matrix_set_color(27, 0x00, 0x00, 0xFF);
+            rgb_matrix_set_color(28, 0x00, 0x00, 0xFF);
+            break;
+        default:
+            if (rgb_matrix_get_flags() == LED_FLAG_NONE)
+            rgb_matrix_set_color_all(0, 0, 0);
+            break;
+  }
+  uint8_t this_led = host_keyboard_leds();
+
+  if ( this_led & (1<<USB_LED_CAPS_LOCK)) {
+    rgb_matrix_set_color_all(0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(6, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(7, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(8, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(9, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(10, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(13, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(14, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(15, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(16, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(17, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(18, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(19, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(20, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(21, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(22, 0xFF, 0xFF, 0x00);
+
+    //  rgb_matrix_set_color(50, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(51, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(52, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(53, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(54, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(55, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(56, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(57, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(58, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(64, 0xFF, 0xFF, 0x00);
+    //  rgb_matrix_set_color(65, 0xFF, 0xFF, 0x00);
+  }
+}
 #endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -286,4 +345,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
   }
   return true;
+}
+
+void suspend_power_down_kb(void) {
+    rgb_matrix_disable_noeeprom();
+    suspend_power_down_user();
+}
+
+ void suspend_wakeup_init_kb(void) {
+    rgb_matrix_enable_noeeprom();
+    suspend_wakeup_init_user();
 }
