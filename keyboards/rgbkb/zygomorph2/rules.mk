@@ -32,7 +32,7 @@ SLEEP_LED_ENABLE = no       # Breathing sleep LED during USB suspend
 OLED_DRIVER_ENABLE = yes     # Enable the OLED Driver
 
 # ENCODER_ENABLE = no 	# We're not using the normal QMK encoder support
-SRC += ../common/encoder.c
+# SRC += ../common/encoder.c
 # OPT_DEFS += -DENCODER_ENABLE
 OPT_DEFS += -Ikeyboards/rgbkb/common
 

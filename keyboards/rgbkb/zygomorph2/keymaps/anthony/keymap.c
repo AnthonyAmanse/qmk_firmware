@@ -184,6 +184,69 @@ void oled_task_user(void) {
 }
 #endif
 
+
+// Sync
+#include <print.h>
+#include <string.h>
+#include <transactions.h>
+#include "syncfunctions.h"
+
+user_runtime_config user_state;
+
+void rpc_user_sync_callback(uint8_t initiator2target_buffer_size, const void *initiator2target_buffer, uint8_t target2initiator_buffer_size, void *target2initiator_buffer) {
+    if (initiator2target_buffer_size == sizeof(user_state)) {
+        memcpy(&user_state, initiator2target_buffer, sizeof(user_runtime_config));
+    }
+}
+
+void keyboard_post_init_user(void) {
+    // Register keyboard state sync split transaction
+    transaction_register_rpc(RPC_ID_SYNC_STATE_USER, rpc_user_sync_callback);
+}
+
+void user_state_sync(void) {
+    if (is_keyboard_master()) {
+        // Keep track of the last state, so that we can tell if we need to propagate to slave
+        static user_runtime_config last_user_state;
+        static uint32_t            last_sync;
+        bool                       needs_sync = false;
+
+        // Check if the state values are different
+        if (memcmp(&user_state, &last_user_state, sizeof(user_runtime_config))) {
+            needs_sync = true;
+            memcpy(&last_user_state, &user_state, sizeof(user_runtime_config));
+        }
+
+        // Send to slave every 1000ms regardless of state change
+        if (timer_elapsed32(last_sync) > 1000) {
+            needs_sync = true;
+        }
+
+        // Perform the sync if requested
+        if (needs_sync) {
+            last_sync = timer_read32();
+            if (!transaction_rpc_send(RPC_ID_SYNC_STATE_USER, sizeof(user_runtime_config), &user_state)) {
+                print("Failed to perform rpc call\n");
+            }
+        }
+    } else {
+        if (user_state.layer == _GAME) {
+            set_game_layer_colors();
+        } else if (user_state.layer == _FN) {
+            set_fn_layer_colors();
+        }
+
+        if (user_state.caps_pressed) {
+            set_alphakeys_color();
+        }
+    }
+}
+
+void housekeeping_task_user(void) {
+    // Data sync from master to slave
+    user_state_sync();
+}
+
 // For RGBRST Keycode
 #if defined(RGB_MATRIX_ENABLE)
 void rgb_matrix_increase_flags(void)
@@ -240,61 +303,28 @@ void rgb_matrix_decrease_flags(void)
 
 void rgb_matrix_indicators_user(void) {
 //   if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
-    switch (biton32(layer_state)) {
+    int current_layer = biton32(layer_state);
+    if (is_keyboard_master()) user_state.layer = current_layer;
+    switch (current_layer) {
         case _GAME:
-            rgb_matrix_set_color_all(0, 0, 0);
-            rgb_matrix_set_color(7, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(8, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(9, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(10, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(13, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(14, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(15, 0xFF, 0x00, 0x00);
-            rgb_matrix_set_color(16, 0xFF, 0x00, 0x00);
-
-
-            rgb_matrix_set_color(23, 0x00, 0x00, 0xFF);
-            rgb_matrix_set_color(24, 0x00, 0x00, 0xFF);
-            rgb_matrix_set_color(27, 0x00, 0x00, 0xFF);
-            rgb_matrix_set_color(28, 0x00, 0x00, 0xFF);
+            set_game_layer_colors();
+            break;
+        case _FN:
+            set_fn_layer_colors();
             break;
         default:
             if (rgb_matrix_get_flags() == LED_FLAG_NONE)
             rgb_matrix_set_color_all(0, 0, 0);
             break;
-  }
-  uint8_t this_led = host_keyboard_leds();
+    }
+    uint8_t this_led = host_keyboard_leds();
 
-  if ( this_led & (1<<USB_LED_CAPS_LOCK)) {
-    rgb_matrix_set_color_all(0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(6, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(7, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(8, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(9, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(10, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(13, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(14, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(15, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(16, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(17, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(18, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(19, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(20, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(21, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(22, 0xFF, 0xFF, 0x00);
-
-    //  rgb_matrix_set_color(50, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(51, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(52, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(53, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(54, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(55, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(56, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(57, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(58, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(64, 0xFF, 0xFF, 0x00);
-    //  rgb_matrix_set_color(65, 0xFF, 0xFF, 0x00);
-  }
+    if ( this_led & (1<<USB_LED_CAPS_LOCK)) {
+        if (is_keyboard_master()) user_state.caps_pressed = true;
+        set_alphakeys_color();
+    } else {
+        if (is_keyboard_master()) user_state.caps_pressed = false;
+    }
 }
 #endif
 
